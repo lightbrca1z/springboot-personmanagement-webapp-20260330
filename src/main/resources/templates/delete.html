@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:replace="~{fragments/layout-head :: head (${title})}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-rose-50/50 to-slate-100 font-sans text-slate-800">
+  <div th:replace="~{fragments/nav :: nav ('list')}"></div>
+
+  <main class="mx-auto max-w-lg px-4 py-10">
+    <header class="mb-8">
+      <a th:href="@{/}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">← 一覧へ</a>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900" th:text="${title}">削除確認</h1>
+      <p class="mt-1 text-slate-600" th:text="${msg}">このレコードを削除しますか？</p>
+    </header>
+
+    <div class="rounded-2xl border border-rose-200/80 bg-white p-8 shadow-xl shadow-rose-100/80">
+      <dl class="space-y-3 rounded-xl bg-slate-50 p-5 text-sm">
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">ID</dt>
+          <dd class="font-mono font-medium text-slate-900" th:text="${formModel.id}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">名前</dt>
+          <dd class="font-medium text-slate-900" th:text="${formModel.name}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">メールアドレス</dt>
+          <dd class="text-slate-800" th:text="${formModel.email}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">作成日時</dt>
+          <dd class="font-mono text-slate-800" th:text="${formModel.createdAt != null ? #temporals.format(formModel.createdAt, 'yyyy-MM-dd HH:mm:ss') : '—'}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">更新日時</dt>
+          <dd class="font-mono text-slate-800" th:text="${formModel.updatedAt != null ? #temporals.format(formModel.updatedAt, 'yyyy-MM-dd HH:mm:ss') : '—'}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">電話</dt>
+          <dd class="font-mono text-slate-800" th:text="${formModel.phone != null ? formModel.phone : '—'}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-b border-slate-200 pb-2">
+          <dt class="text-slate-500">年齢</dt>
+          <dd class="text-slate-800" th:text="${formModel.age}">—</dd>
+        </div>
+        <div class="flex justify-between gap-4 pt-1">
+          <dt class="text-slate-500">Memo</dt>
+          <dd class="max-w-[60%] text-right text-slate-700" th:text="${formModel.memo}">—</dd>
+        </div>
+      </dl>
+
+      <form method="post" th:action="@{/delete}" class="mt-8 flex flex-wrap gap-3"
+            onsubmit="return confirm('本当に削除しますか？');">
+        <input type="hidden" name="id" th:value="${formModel.id}"/>
+        <button type="submit"
+                class="rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-red-700">削除する</button>
+        <a th:href="@{/edit/{id}(id=${formModel.id})}"
+           class="rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">編集に戻る</a>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

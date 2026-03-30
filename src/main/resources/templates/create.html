@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:replace="~{fragments/layout-head :: head (${title})}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 font-sans text-slate-800">
+  <div th:replace="~{fragments/nav :: nav ('create')}"></div>
+
+  <main class="mx-auto max-w-xl px-4 py-10">
+    <header class="mb-8">
+      <a th:href="@{/}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">← 一覧へ</a>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900" th:text="${title}">登録</h1>
+      <p th:if="${msg}" class="mt-1 text-red-600" th:text="${msg}"></p>
+    </header>
+
+    <div class="rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xl shadow-slate-200/50">
+      <form method="post" th:action="@{/create}" th:object="${formModel}" class="space-y-5">
+        <div>
+          <label for="name" class="block text-sm font-medium text-slate-700">名前 <span class="text-red-600">*</span>（50文字以内）</label>
+          <input id="name" type="text" th:field="*{name}" maxlength="50"
+                 th:errorclass="'border-red-400 focus:border-red-500 focus:ring-red-500/20'"
+                 class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"/>
+          <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="mt-1 text-sm text-red-600"></p>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-slate-700">メールアドレス <span class="text-red-600">*</span>（200文字以内）</label>
+          <input id="email" type="email" th:field="*{email}" maxlength="200" autocomplete="email"
+                 th:errorclass="'border-red-400 focus:border-red-500 focus:ring-red-500/20'"
+                 class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"/>
+          <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="mt-1 text-sm text-red-600"></p>
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-medium text-slate-700">電話番号（任意・32文字以内）</label>
+          <input id="phone" type="text" th:field="*{phone}" maxlength="32" inputmode="tel" autocomplete="tel"
+                 placeholder="例: 03-1234-5678"
+                 th:errorclass="'border-red-400 focus:border-red-500 focus:ring-red-500/20'"
+                 class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"/>
+          <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="mt-1 text-sm text-red-600"></p>
+        </div>
+        <div>
+          <label for="age" class="block text-sm font-medium text-slate-700">年齢</label>
+          <input id="age" type="number" th:field="*{age}"
+                 th:errorclass="'border-red-400 focus:border-red-500 focus:ring-red-500/20'"
+                 class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"/>
+          <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="mt-1 text-sm text-red-600"></p>
+        </div>
+        <div>
+          <label for="memo" class="block text-sm font-medium text-slate-700">Memo</label>
+          <textarea id="memo" rows="4" th:field="*{memo}"
+                    th:errorclass="'border-red-400 focus:border-red-500 focus:ring-red-500/20'"
+                    class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
+          <p th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}" class="mt-1 text-sm text-red-600"></p>
+        </div>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <button type="submit" class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition hover:bg-indigo-700">登録する</button>
+          <a th:href="@{/}" class="rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">キャンセル</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

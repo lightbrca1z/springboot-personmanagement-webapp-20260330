@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:replace="~{fragments/layout-head :: head (${title})}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 font-sans text-slate-800">
+  <div th:replace="~{fragments/nav :: nav ('list')}"></div>
+
+  <main class="mx-auto max-w-5xl px-4 py-10">
+    <header class="mb-8 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900" th:text="${title}">一覧</h1>
+        <p class="mt-1 text-slate-600" th:text="${msg}">メッセージ</p>
+      </div>
+      <div class="flex w-full flex-col items-end gap-3 sm:w-auto sm:shrink-0">
+        <form method="get" th:action="@{/}"
+              class="ml-auto flex w-full max-w-xl flex-wrap items-end gap-2 rounded-xl border border-slate-200/90 bg-white/90 px-3 py-2.5 shadow-sm">
+          <input type="hidden" name="page" value="0"/>
+          <div class="min-w-[8rem]">
+            <label for="searchName" class="block text-xs font-medium text-slate-500">名前（部分一致）</label>
+            <input id="searchName" type="text" name="searchName" th:value="${searchName}"
+                   placeholder="例: 山田"
+                   class="mt-0.5 w-full min-w-[9rem] rounded-md border border-slate-300 px-2 py-1.5 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
+          </div>
+          <div class="min-w-[10rem]">
+            <label for="searchEmail" class="block text-xs font-medium text-slate-500">メール（部分一致）</label>
+            <input id="searchEmail" type="text" name="searchEmail" th:value="${searchEmail}"
+                   placeholder="例: @gmail"
+                   class="mt-0.5 w-full min-w-[9rem] rounded-md border border-slate-300 px-2 py-1.5 text-sm text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
+          </div>
+          <button type="submit"
+                  class="inline-flex items-center justify-center rounded-lg bg-slate-800 px-3 py-2 text-xs font-semibold text-white shadow transition hover:bg-slate-700">
+            検索
+          </button>
+          <a th:href="@{/}"
+             class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+            クリア
+          </a>
+        </form>
+        <div class="ml-auto flex w-full max-w-xl flex-wrap items-center justify-end gap-2">
+          <a th:href="@{/create}"
+             class="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition hover:bg-indigo-700">新規登録</a>
+          <form method="post" th:action="@{/reset}" class="inline"
+                onsubmit="return confirm('本当に全件削除しますか？');">
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-50">
+              全件リセット
+            </button>
+          </form>
+        </div>
+        <div th:if="${page != null and page.totalElements > 0}"
+             class="ml-auto flex w-full max-w-xl flex-wrap justify-end gap-2">
+          <div class="flex flex-wrap justify-end gap-2">
+            <a th:if="${page.hasPrevious()}"
+               th:href="@{/(page=${page.number - 1}, searchName=${searchName}, searchEmail=${searchEmail})}"
+               class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+              前へ
+            </a>
+            <a th:if="${page.hasNext()}"
+               th:href="@{/(page=${page.number + 1}, searchName=${searchName}, searchEmail=${searchEmail})}"
+               class="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+              次へ
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/50">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+          <thead class="bg-slate-50/80">
+            <tr>
+              <th class="px-4 py-3 font-semibold text-slate-600">ID</th>
+              <th class="px-4 py-3 font-semibold text-slate-600">名前</th>
+              <th class="px-4 py-3 font-semibold text-slate-600">メールアドレス</th>
+              <th class="px-4 py-3 font-semibold text-slate-600">電話</th>
+              <th class="px-4 py-3 font-semibold text-slate-600">年齢</th>
+              <th class="px-4 py-3 font-semibold text-slate-600">Memo</th>
+              <th class="px-4 py-3 font-semibold text-slate-600 text-right">操作</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr th:each="item : ${data}" class="transition hover:bg-indigo-50/40">
+              <td class="whitespace-nowrap px-4 py-3 font-mono text-slate-500" th:text="${item.id}">1</td>
+              <td class="px-4 py-3 font-medium text-slate-900" th:text="${item.name}">—</td>
+              <td class="px-4 py-3 text-slate-600" th:text="${item.email}">—</td>
+              <td class="whitespace-nowrap px-4 py-3 font-mono text-sm text-slate-600" th:text="${item.phone != null ? item.phone : '—'}">—</td>
+              <td class="px-4 py-3 text-slate-600" th:text="${item.age}">—</td>
+              <td class="max-w-xs truncate px-4 py-3 text-slate-500" th:text="${item.memo}">—</td>
+              <td class="whitespace-nowrap px-4 py-3 text-right">
+                <div class="flex flex-wrap justify-end gap-2">
+                  <a th:href="@{/edit/{id}(id=${item.id})}"
+                     class="rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-50">編集</a>
+                  <form th:action="@{/delete}" method="post" class="inline"
+                        onsubmit="return confirm('本当に削除しますか？');">
+                    <input type="hidden" name="id" th:value="${item.id}"/>
+                    <button type="submit"
+                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-red-700">削除</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(data)}">
+              <td colspan="7" class="px-4 py-12 text-center text-slate-500">データがありません。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+      <p th:if="${page != null and page.totalElements > 0}"
+         class="border-t border-slate-100 bg-slate-50/50 px-4 py-3 text-left text-sm leading-relaxed text-slate-600">
+        <span th:text="${page.number + 1}">1</span> / <span th:text="${page.totalPages}">1</span> ページ
+        <span class="mx-2 text-slate-400">·</span>
+        全 <span th:text="${page.totalElements}">0</span> 件（1ページ <span th:text="${page.size}">10</span> 件）
+      </p>
+  </main>
+  <script th:inline="javascript" th:if="${successMessage}">
+    alert([[${successMessage}]]);
+  </script>
+</body>
+</html>

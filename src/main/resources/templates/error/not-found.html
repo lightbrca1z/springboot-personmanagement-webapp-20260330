@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
+<head th:replace="~{fragments/layout-head :: head (${title})}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-indigo-50/40 font-sans text-slate-800">
+  <div th:replace="~{fragments/nav :: nav ('list')}"></div>
+
+  <main class="mx-auto max-w-lg px-4 py-16 text-center">
+    <p class="text-7xl font-bold tabular-nums text-slate-200" th:text="${statusCode}">404</p>
+    <h1 class="mt-4 text-2xl font-bold tracking-tight text-slate-900" th:text="${title}">データが見つかりません</h1>
+    <p class="mt-3 text-slate-600 leading-relaxed" th:text="${message}">メッセージ</p>
+    <a th:href="@{/}"
+       class="mt-10 inline-flex items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition hover:bg-indigo-700">
+      一覧へ戻る
+    </a>
+  </main>
+</body>
+</html>

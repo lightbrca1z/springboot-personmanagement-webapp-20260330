@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:replace="~{fragments/layout-head :: head ('新規ユーザー登録')}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 font-sans text-slate-100">
+  <main class="mx-auto max-w-md px-4 py-10">
+    <div class="mb-8 text-center">
+      <p class="text-sm font-medium uppercase tracking-widest text-indigo-300">Person CMS</p>
+      <h1 class="mt-2 text-2xl font-bold text-white">新規ユーザー登録</h1>
+      <p class="mt-1 text-sm text-slate-400">アカウントを作成します</p>
+      <p class="mt-4">
+        <a th:href="@{/login}" class="text-sm font-medium text-indigo-300 hover:text-indigo-200">← ログイン画面へ</a>
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur">
+      <form th:action="@{/register}" th:object="${registerForm}" method="post" class="space-y-4">
+        <div th:if="${registerError}" class="space-y-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-100">
+          <p th:each="e : ${#fields.globalErrors()}" th:text="${e}">エラー</p>
+          <p th:if="${!#fields.hasGlobalErrors()}" class="text-amber-200/90">入力内容を確認してください。</p>
+        </div>
+        <div>
+          <label for="reg-username" class="block text-sm font-medium text-slate-300">ユーザー名（3〜64文字）</label>
+          <input id="reg-username" type="text" th:field="*{username}" autocomplete="off"
+                 th:classappend="${#fields.hasErrors('username')} ? ' border-red-400' : ''"
+                 class="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2.5 text-white focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"/>
+          <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="mt-1 text-sm text-red-300"></p>
+        </div>
+        <div>
+          <label for="reg-password" class="block text-sm font-medium text-slate-300">パスワード（6文字以上）</label>
+          <input id="reg-password" type="password" th:field="*{password}" autocomplete="new-password"
+                 th:classappend="${#fields.hasErrors('password')} ? ' border-red-400' : ''"
+                 class="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2.5 text-white focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"/>
+          <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="mt-1 text-sm text-red-300"></p>
+        </div>
+        <div>
+          <label for="reg-confirm" class="block text-sm font-medium text-slate-300">パスワード（確認）</label>
+          <input id="reg-confirm" type="password" th:field="*{confirmPassword}" autocomplete="new-password"
+                 th:classappend="${#fields.hasErrors('confirmPassword')} ? ' border-red-400' : ''"
+                 class="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2.5 text-white focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"/>
+          <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="mt-1 text-sm text-red-300"></p>
+        </div>
+        <button type="submit"
+                class="mt-2 w-full rounded-lg border border-indigo-400/50 bg-indigo-600/80 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500">
+          アカウントを登録する
+        </button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

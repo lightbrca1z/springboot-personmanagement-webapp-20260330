@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head th:replace="~{fragments/layout-head :: head ('ログイン')}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 font-sans text-slate-100">
+  <main class="mx-auto max-w-md px-4 py-10">
+    <div class="mb-8 text-center">
+      <p class="text-sm font-medium uppercase tracking-widest text-indigo-300">Person CMS</p>
+      <h1 class="mt-2 text-2xl font-bold text-white">ログイン</h1>
+      <p class="mt-1 text-sm text-slate-400">アカウントをお持ちの方はこちら</p>
+    </div>
+
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur">
+      <div th:if="${param.session != null and param.session[0] == 'invalid'}" class="mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-100">
+        セッションとデータベースの内容が一致しません。再度ログインしてください。
+      </div>
+      <div th:if="${param.error}" class="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-200">
+        ユーザー名またはパスワードが正しくありません。
+      </div>
+      <div th:if="${param.logout}" class="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200">
+        ログアウトしました。
+      </div>
+      <div th:if="${registeredMessage}" class="mb-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-200" th:text="${registeredMessage}">
+      </div>
+
+      <form th:action="@{/login}" method="post" class="space-y-5">
+        <div>
+          <label for="username" class="block text-sm font-medium text-slate-300">ユーザー名</label>
+          <input id="username" name="username" type="text" autocomplete="username" required autofocus
+                 class="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2.5 text-white placeholder:text-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"/>
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-slate-300">パスワード</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required
+                 class="mt-1 w-full rounded-lg border border-white/10 bg-slate-900/50 px-3 py-2.5 text-white placeholder:text-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"/>
+        </div>
+        <button type="submit"
+                class="w-full rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:bg-indigo-400">
+          ログイン
+        </button>
+      </form>
+
+      <p class="mt-8 border-t border-white/10 pt-6 text-center text-sm text-slate-400">
+        はじめての方は
+        <a th:href="@{/login-register}" class="font-semibold text-indigo-300 hover:text-indigo-200">新規ユーザー登録</a>
+      </p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
+<head th:replace="~{fragments/layout-head :: head (${title})}">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-amber-50/80 via-slate-50 to-slate-100 font-sans text-slate-800">
+  <div th:replace="~{fragments/nav :: nav ('list')}"></div>
+
+  <main class="mx-auto max-w-lg px-4 py-16 text-center">
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-amber-700">
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+    </div>
+    <h1 class="mt-6 text-2xl font-bold tracking-tight text-slate-900" th:text="${title}">データベース接続エラー</h1>
+    <p class="mt-3 text-slate-600 leading-relaxed" th:text="${message}">メッセージ</p>
+    <a th:href="@{/}"
+       class="mt-10 inline-flex items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition hover:bg-indigo-700">
+      一覧へ戻る
+    </a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+  <nav th:fragment="nav (active)" class="border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+    <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-4">
+      <a th:href="@{/}" class="text-lg font-semibold tracking-tight text-slate-900">Person CMS</a>
+      <div class="flex flex-wrap items-center gap-2 text-sm">
+        <a th:href="@{/}"
+           th:classappend="${active == 'list'} ? ' bg-indigo-600 text-white shadow' : ' text-slate-600 hover:bg-slate-100'"
+           class="rounded-lg px-4 py-2 font-medium transition">一覧</a>
+        <a th:href="@{/create}"
+           th:classappend="${active == 'create'} ? ' bg-indigo-600 text-white shadow' : ' text-slate-600 hover:bg-slate-100'"
+           class="rounded-lg px-4 py-2 font-medium transition">登録</a>
+        <a th:href="@{/logout}"
+           class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+          ログアウト
+        </a>
+
+        <span class="mx-1 hidden h-6 w-px bg-slate-300 sm:inline" aria-hidden="true"></span>
+
+        <a sec:authorize="isAnonymous()" th:href="@{/login}"
+           class="rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2 font-medium text-indigo-700 transition hover:bg-indigo-100">
+          ログイン
+        </a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="inline-flex items-center gap-2">
+          <span class="hidden text-slate-500 sm:inline text-xs" sec:authentication="name">user</span>
+          <button type="submit"
+                  class="rounded-lg border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:bg-slate-50">
+            ログアウト
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</body>
+</html>
